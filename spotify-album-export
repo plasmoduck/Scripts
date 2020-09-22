@@ -62,7 +62,7 @@ get_album_list() {
         exit 1
     fi
 
-    curl --silent -X GET "https://api.spotify.com/v1/me/albums?limit=$limit" -H "Accept: application/json" -H "Authorization: Bearer $token" | jq -r '.items | map([.album.artists[].name, .album.name, .album.id] | join("|")) | join("\n")' >> $file_albumlist && echo "Done. You can find the album list here: $file_albumlist"
+    curl --silent -X GET "https://api.spotify.com/v1/me/albums?limit=$limit" -H "Accept: application/json" -H "Authorization: Bearer $token" | jq -r '.items | .[]? | map([.album.artists[].name, .album.name, .album.id] | join("|")) | join("\n")' >> $file_albumlist && echo "Done. You can find the album list here: $file_albumlist"
 }
 
 get_album_list_with_offset() {
@@ -72,7 +72,7 @@ get_album_list_with_offset() {
         exit 1
     fi
 
-        curl --silent -X GET "https://api.spotify.com/v1/me/albums?offset=$offset&limit=$limit" -H "Authorization: Bearer $token" | jq -r '.items | map([.album.artists[].name, .album.name, .album.id] | join("|")) | join("\n")' >> $file_albumlist && echo "Done. You can find the album list here: $file_albumlist"
+        curl --silent -X GET "https://api.spotify.com/v1/me/albums?offset=$offset&limit=$limit" -H "Authorization: Bearer $token" | jq -r '.items | .[]? | map([.album.artists[].name, .album.name, .album.id] | join("|")) | join("\n")' >> $file_albumlist && echo "Done. You can find the album list here: $file_albumlist"
 
 }
 
